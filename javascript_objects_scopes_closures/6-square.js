@@ -4,10 +4,10 @@
 * with instance charPrint()
 */
 
-const BaseSquare = require('./5-sqaure');
+const Square = require('./5-square');
 // Import the Square class from 5-square.js
 
-class Square extends BaseSquare {
+class Square2 extends Square {
     charPrint(c) {
         if (c === undefined) {
             c = 'X';
