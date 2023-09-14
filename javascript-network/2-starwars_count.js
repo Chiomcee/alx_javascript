@@ -4,25 +4,24 @@
  * "Wedge Antilles" is present from the Star wars API:
  */
 
-const request = require('request');
 
+const request = require('request');
 const url = process.argv[2];
-const characterId = 18;
+const characterId = '18';
 let count = 0;
 
-request.get(url, function(error, response, body) {
+request.get(url, (error, response, body) => {
   if (error) {
-    console.error('Error:', error);
-  } else if (response.statusCode !== 200) {
-    console.error('API Error:', response.statusCode);
+    console.log(error);
   } else {
-    const films = JSON.parse(body).results;
-    films.forEach(function(film) {
-      if (film.characters.includes(`https://swapi-api.alx-tools.com/api/people/${characterId}/`)) {
-        count++;
-      }
+    const data = JSON.parse(body);
+    data.results.forEach((film) => {
+      film.characters.forEach((character) => {
+        if (character.includes(characterId)) {
+          count += 1;
+        }
+      });
     });
     console.log(count);
   }
 });
-
