@@ -1,27 +1,19 @@
 #!/usr/bin/node
 
+
 const request = require('request');
+const fs = require('fs');
+const url = process.argv[2];
+const file = process.argv[3];
 
-const movieId = process.argv[2];
-
-request(https://swapi.dev/api/films/${movieId}/, (error, response, body) => { 
-    if (error) {
-    console.error(error);
-    return;
-  }
-
-  const movie = JSON.parse(body);
-  const characters = movie.characters;
-
-  characters.forEach((characterUrl) => {
-    request(characterUrl, (error, response, body) => {
+request(url, (error, response, body) => {
+  if (error) {
+    console.log(error);
+  } else {
+    fs.writeFile(file, body, 'utf8', (error) => {
       if (error) {
-        console.error(error);
-        return;
+        console.log(error);
       }
-
-      const character = JSON.parse(body);
-      console.log(character.name);
     });
-  });
+  }
 });
