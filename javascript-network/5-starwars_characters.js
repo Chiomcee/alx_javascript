@@ -1,32 +1,35 @@
 #!/usr/bin/node
 
 
-const { error } = require('console');
-const request = require('request');
-const id = process.argv[2];
-const url = 'https://swapi-api.alx-tools.com/api/films/${id}/';
+const axios = require('axios');
 
-function getCharacter (listChar, index) {
-  if (index === listChar.length) {
-    return;
-  }
-  request('$listChar[index]}',(error, response, body) => {
-    if (error) {
-      console.log(error);
-    } else {
-      const character =JSON.parse(response.body);
-      console.log(character.name);
-      getCharacter(listChar, index + 1);
-    }
+// Retrieve the movie ID from the command line argument
+const movieId = process.argv[2];
+
+// Make a GET request to the Star Wars API
+axios.get(`https://swapi.dev/api/films/${movieId}/`)
+  .then(response => {
+    const movieData = response.data;
+    const characterUrls = movieData.characters;
+
+    // Make parallel requests to get characters
+    const characterPromises = characterUrls.map(url => {
+      return axios.get(url)
+        .then(response => response.data.name);
+    });
+
+    // Wait for all requests to finish
+    Promise.all(characterPromises)
+      .then(characters => {
+        // Print the character names
+        characters.forEach(character => {
+          console.log(character);
+        });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  })
+  .catch(error => {
+    console.error('Error:', error);
   });
-}
-
-request(url, (error, response, body) => {
-  if (error) {
-    console.log(error);
-  } else {
-    const film = JSON.parse(response.body);
-    const listChar = film.characters;
-    getCharacter(listChar, 0);
-  }
-})
