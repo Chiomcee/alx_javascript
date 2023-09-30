@@ -1,3 +1,3 @@
 # JavaScript - Network
 
-## solution to all task in ALX ISWE JavaScript - Network
+## Solution to all Iswe task in ALX ISWE JavaScript - Network
