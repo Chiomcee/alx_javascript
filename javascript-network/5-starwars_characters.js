@@ -29,4 +29,4 @@ request(url, (error, response, body) => {
     const listChar = film.characters;
     getCharacter(listChar, 0);
   }
-});
+})
